@@ -1,0 +1,200 @@
+unit UTelaCadastro;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Grids, Vcl.ValEdit;
+
+type
+  TFcadastroproduto = class(TForm)
+    descricao: TLabel;
+    codigo: TLabel;
+    campocodigo: TEdit;
+    CampoDescricao: TEdit;
+    unidade: TLabel;
+    CampoUnidade: TEdit;
+    estoque: TLabel;
+    CampoEstoque: TEdit;
+    precocusto: TLabel;
+    Campoprecocusto: TEdit;
+    ValueListEditor1: TValueListEditor;
+    precovenda: TLabel;
+    Campoprecovenda: TEdit;
+    lucro: TLabel;
+    Campolucro: TEdit;
+    btSalvar: TButton;
+    procedure btSalvarClick(Sender: TObject);
+    procedure CampoprecocustoExit(Sender: TObject);
+    procedure CampoprecovendaExit(Sender: TObject);
+    procedure CampolucroExit(Sender: TObject);
+  private
+    { Private declarations }
+    procedure InserirNovoProduto;
+    procedure AtualizarProduto(ID: Integer);
+    procedure CalcularLucro;
+  public
+    { Public declarations }
+    procedure CarregarDadosParaEdicao(ID: Integer);
+  end;
+
+var
+  Fcadastroproduto: TFcadastroproduto;
+
+implementation
+
+{$R *.dfm}
+
+uses uTelaGerenciador, uTelaDB;
+
+
+
+
+procedure TFcadastroproduto.AtualizarProduto(ID: Integer);
+
+   begin
+
+       DM.FDQuery.Close;
+       DM.FDQuery.SQL.Clear;
+       DM.FDQuery.SQL.Add('UPDATE Produtos SET Codpro = :codigo, Nompro = :descricao, ');
+       DM.FDQuery.SQL.Add('Estoque = :estoque, Pcustol = :precocusto, Un = :unidade, ');
+       DM.FDQuery.SQL.Add('PVenda = :precovenda WHERE ID = :id');
+
+       Dm.FDQuery.ParamByName('codigo').AsInteger := StrToInt(campocodigo.Text);
+       DM.FDQuery.ParamByName('descricao').AsString := CampoDescricao.Text;
+       DM.FDQuery.ParamByName('estoque').AsInteger := StrToInt(CampoEstoque.Text);
+       DM.FDQuery.ParamByName('precocusto').AsCurrency := StrToFloat(Campoprecocusto.Text);
+       DM.FDQuery.ParamByName('precovenda').AsCurrency := StrToFloat(Campoprecovenda.Text);
+       DM.FDQuery.ParamByName('unidade').AsString := CampoUnidade.Text;
+       DM.FDQuery.ParamByName('id').AsInteger := ID;
+
+       DM.FDQuery.ExecSQL;
+       DM.FDConnection1.Commit;
+       ShowMessage('Produto atualizado com sucesso!');
+   end;
+
+
+procedure TFcadastroproduto.btSalvarClick(Sender: TObject);
+
+  var
+    ID: String;
+
+  begin
+
+     if (CampoDescricao.Text = '') or
+     (CampoEstoque.Text = '') or (Campoprecocusto.Text = '') or
+     (Campoprecovenda.Text = '') then
+
+     begin
+        ShowMessage('Por favor, preencha todos os campos obrigatórios!');
+
+        Exit;
+     end;
+
+   ID := Campocodigo.Text;
+
+    if ID = '' then
+    begin
+      InserirNovoProduto;
+    end
+
+    else
+
+    begin
+      AtualizarProduto(StrToInt(ID));
+    end;
+
+    Close;
+   
+  end;
+
+procedure TFcadastroproduto.CalcularLucro;
+var
+  Precocusto, Precovenda, Lucro: Currency;
+begin
+   Precocusto := StrToFloatDef(Campoprecocusto.Text, 0);
+   Precovenda := StrToFloatDef(Campoprecovenda.Text, 0);
+
+   Lucro := Precovenda - Precovenda;
+
+   Campolucro.Text := Format('%.2n', [Lucro]);
+end;
+
+procedure TFcadastroproduto.CampolucroExit(Sender: TObject);
+var
+   Valor: Currency;
+begin
+   Valor := StrToFloatDef(Campolucro.Text, 0);
+
+   Campolucro.Text := Format('%.2n', [Valor]);
+end;
+
+procedure TFcadastroproduto.CampoprecocustoExit(Sender: TObject);
+begin
+
+   CalcularLucro;
+
+end;
+
+procedure TFcadastroproduto.CampoprecovendaExit(Sender: TObject);
+begin
+
+   CalcularLucro;
+
+end;
+
+procedure TFcadastroproduto.CarregarDadosParaEdicao(ID: Integer);
+begin
+   DM.FDQuery.Close;
+   DM.FDQuery.SQL.Clear;
+   DM.FDQuery.SQL.Add('Select * From Produtos Where Codpro = :id');
+
+   DM.FDQuery.ParamByName('id').AsInteger := ID;
+
+   DM.FDQuery.Open;
+
+   if not DM.FDQuery.Eof then
+   begin
+      campocodigo.Text := DM.FDQuery.FieldByName('Codpro').AsString;
+      CampoDescricao.Text := DM.FDQuery.FieldByName('Nompro').AsString;
+      CampoUnidade.Text := DM.FDQuery.FieldByName('Un').AsString;
+      CampoEstoque.Text := DM.FDQuery.FieldByName('Estoque').AsString;
+      Campoprecocusto.Text := DM.FDQuery.FieldByName('Pcustol').AsString;
+      Campoprecovenda.Text := DM.FDQuery.FieldByName('PVenda').AsString;
+
+      Campolucro.Text := FloatToStr(DM.FDQuery.FieldByName('PVenda').AsFloat - DM.FDQuery.FieldByName('Pcustol').AsFloat);
+   end;
+end;
+
+
+procedure TFcadastroproduto.InserirNovoProduto;
+begin
+
+   begin
+
+     DM.FDQuery.Close;
+     DM.FDQuery.SQL.Clear;
+     DM.FDQuery.SQL.Add('INSERT INTO Produtos (Codpro, Nompro, Estoque, Pcustol, PVenda, Un, orig, DH_Cad, iat, ippt, id_emp) ');
+     DM.FDQuery.SQL.Add('VALUES (:codigo, :descricao, :estoque, :precocusto, :precovenda, :unidade, :orig, :DH_Cad, :iat, :ippt, :id_emp)');
+
+     Dm.FDQuery.ParamByName('codigo').AsInteger := StrToInt(campocodigo.Text);
+     DM.FDQuery.ParamByName('descricao').AsString := CampoDescricao.Text;
+     DM.FDQuery.ParamByName('estoque').AsInteger := StrToInt(CampoEstoque.Text);
+     DM.FDQuery.ParamByName('precocusto').AsCurrency := StrToFloat(Campoprecocusto.Text);
+     DM.FDQuery.ParamByName('precovenda').AsCurrency := StrToFloat(Campoprecovenda.Text);
+     DM.FDQuery.ParamByName('unidade').AsString := CampoUnidade.Text;
+     DM.FDQuery.ParamByName('orig').AsString := 'a';
+     DM.FDQuery.ParamByName('DH_Cad').AsDateTime := StrToDate('21/08/2025');
+     DM.FDQuery.ParamByName('iat').AsString := 'a';
+     DM.FDQuery.ParamByName('ippt').AsString := 'a';
+     DM.FDQuery.ParamByName('id_emp').AsInteger := 1;
+
+
+     DM.FDQuery.ExecSQL;
+     DM.FDConnection1.Commit;
+   end;
+   ShowMessage('Produto cadastrado com sucesso!');
+end;
+
+
+end.

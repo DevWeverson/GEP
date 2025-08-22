@@ -1,0 +1,139 @@
+object GEP: TGEP
+  Left = 0
+  Top = 0
+  Caption = 'Gerenciador de Estoque de Produtos'
+  ClientHeight = 535
+  ClientWidth = 1090
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Menu = Menu
+  Position = poScreenCenter
+  TextHeight = 15
+  object ListaProdutos: TDBGrid
+    Left = 8
+    Top = 304
+    Width = 1074
+    Height = 223
+    TabOrder = 0
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -12
+    TitleFont.Name = 'Segoe UI'
+    TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        Title.Caption = 'C'#243'digo'
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -15
+        Title.Font.Name = 'Segoe UI'
+        Title.Font.Style = [fsBold]
+        Width = 126
+        Visible = True
+      end
+      item
+        Expanded = False
+        Title.Caption = 'Descri'#231#227'o'
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -15
+        Title.Font.Name = 'Segoe UI'
+        Title.Font.Style = [fsBold]
+        Width = 300
+        Visible = True
+      end
+      item
+        Expanded = False
+        Title.Caption = 'Estoque'
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -15
+        Title.Font.Name = 'Segoe UI'
+        Title.Font.Style = [fsBold]
+        Width = 141
+        Visible = True
+      end
+      item
+        Expanded = False
+        Title.Caption = 'Pre'#231'o de Custo'
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -15
+        Title.Font.Name = 'Segoe UI'
+        Title.Font.Style = [fsBold]
+        Width = 176
+        Visible = True
+      end
+      item
+        Expanded = False
+        Title.Caption = 'Pre'#231'o de Venda'
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -15
+        Title.Font.Name = 'Segoe UI'
+        Title.Font.Style = [fsBold]
+        Width = 176
+        Visible = True
+      end
+      item
+        Expanded = False
+        Title.Caption = 'Unidade'
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -15
+        Title.Font.Name = 'Segoe UI'
+        Title.Font.Style = [fsBold]
+        Width = 131
+        Visible = True
+      end>
+  end
+  object Pesquisar: TEdit
+    Left = 8
+    Top = 8
+    Width = 705
+    Height = 23
+    TabOrder = 1
+  end
+  object btBuscar: TButton
+    Left = 719
+    Top = 8
+    Width = 98
+    Height = 25
+    Caption = 'Buscar'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 2
+    OnClick = btBuscarClick
+  end
+  object Menu: TMainMenu
+    Left = 392
+    Top = 136
+    object Produto: TMenuItem
+      Caption = 'Produto'
+      object cadastrar: TMenuItem
+        Caption = 'Cadastrar'
+        OnClick = cadastrarClick
+      end
+      object alterar: TMenuItem
+        Caption = 'Alterar'
+      end
+      object excluir: TMenuItem
+        Caption = 'Excluir'
+      end
+    end
+  end
+  object DataSource1: TDataSource
+    DataSet = DM.FDQuery
+    Left = 256
+    Top = 176
+  end
+end

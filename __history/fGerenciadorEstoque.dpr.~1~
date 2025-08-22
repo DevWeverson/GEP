@@ -1,0 +1,14 @@
+program GEP;
+
+uses
+  Vcl.Forms,
+  uTelaGerenciador in 'uTelaGerenciador.pas' {GEP};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TGEP, GEP);
+  Application.Run;
+end.

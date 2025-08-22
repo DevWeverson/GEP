@@ -1,0 +1,115 @@
+unit uTelaGerenciador;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.DBGrids,
+  Vcl.StdCtrls, Vcl.Menus;
+
+type
+  TGEP = class(TForm)
+    ListaProdutos: TDBGrid;
+    Pesquisar: TEdit;
+    btBuscar: TButton;
+    Menu: TMainMenu;
+    Produto: TMenuItem;
+    cadastrar: TMenuItem;
+    alterar: TMenuItem;
+    excluir: TMenuItem;
+    procedure cadastrarClick(Sender: TObject);
+    procedure btBuscarClick(Sender: TObject);
+    procedure alterarClick(Sender: TObject);
+    procedure excluirClick(Sender: TObject);
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+
+  end;
+
+var
+  GEP: TGEP;
+
+implementation
+
+{$R *.dfm}
+
+uses UTelaCadastro, uTelaDB;
+
+
+procedure TGEP.alterarClick(Sender: TObject);
+var
+  IDDoProduto: Integer;
+  fCadastro: TFcadastroproduto;
+begin
+   if DM.FDQuery.Active and not DM.FDQuery.Eof then
+   begin
+      IDDoProduto := DM.FDQuery.FieldByName('codpro').AsInteger;
+
+      fCadastro := TFcadastroproduto.Create(nil);
+
+      try
+        fCadastro.Action := 'atualizar';
+        fCadastro.CarregarDadosParaEdicao(IDDoProduto);
+        fCadastro.ShowModal;
+
+      finally
+        fCadastro.Free;
+      end;
+   end
+   else
+      ShowMessage('Por favor, selecione um produto para alterar.');
+end;
+
+procedure TGEP.btBuscarClick(Sender: TObject);
+begin
+   if Pesquisar.Text = '' then
+   begin
+      ShowMessage('Digite o código ou a descrição do produto para buscar.');
+      Exit;
+   end
+   else
+   begin
+      DM.FDQuery.Close;
+      DM.FDQuery.SQL.Clear;
+      DM.FDQuery.SQL.Add('Select Codpro, Nompro, Estoque, Pcustol, PVenda, Un ');
+      DM.FDQuery.SQL.Add('From Produtos ');
+      DM.FDQuery.SQL.Add('Where Nompro LIKE :busca');
+
+      DM.FDQuery.ParamByName('busca').AsString := '%%' + Pesquisar.Text + '%%';
+      DM.FDQuery.Open;
+   end;
+end;
+
+procedure TGEP.cadastrarClick(Sender: TObject);
+begin
+
+   Fcadastroproduto := TFcadastroproduto.Create(Self);
+
+   try
+      Fcadastroproduto.Action := 'incluir';
+      Fcadastroproduto.ShowModal;
+   finally
+     Fcadastroproduto.Free;
+   end;
+end;
+
+procedure TGEP.excluirClick(Sender: TObject);
+var
+  Id: Integer;
+begin
+   Id := DM.FDQuery.FieldByName('codpro').AsInteger;
+   DM.FDQuery.Close;
+   DM.FDQuery.SQL.Clear;
+   DM.FDQuery.SQL.Add('DELETE FROM Produtos WHERE Codpro = :codigo');
+
+   DM.FDQuery.ParamByName('codigo').AsInteger := Id;
+
+   DM.FDQuery.ExecSQL;
+   DM.FDConnection1.Commit;
+   ShowMessage('Produto excluído com sucesso!');
+end;
+
+end.

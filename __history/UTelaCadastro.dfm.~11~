@@ -1,0 +1,186 @@
+object Fcadastroproduto: TFcadastroproduto
+  Left = 0
+  Top = 0
+  Caption = 'Fcadastroproduto'
+  ClientHeight = 441
+  ClientWidth = 1003
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Position = poMainFormCenter
+  TextHeight = 15
+  object descricao: TLabel
+    Left = 224
+    Top = 8
+    Width = 178
+    Height = 23
+    Caption = 'Descri'#231#227'o do produto:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object codigo: TLabel
+    Left = 8
+    Top = 8
+    Width = 63
+    Height = 23
+    Caption = 'C'#243'digo:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object unidade: TLabel
+    Left = 8
+    Top = 80
+    Width = 72
+    Height = 23
+    Caption = 'Unidade:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object estoque: TLabel
+    Left = 568
+    Top = 80
+    Width = 116
+    Height = 23
+    Caption = 'Estoque Atual:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object precocusto: TLabel
+    Left = 8
+    Top = 192
+    Width = 143
+    Height = 23
+    Caption = 'Pre'#231'o de Compra:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object precovenda: TLabel
+    Left = 304
+    Top = 192
+    Width = 128
+    Height = 23
+    Caption = 'Pre'#231'o de Venda:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lucro: TLabel
+    Left = 576
+    Top = 192
+    Width = 126
+    Height = 23
+    Caption = 'Lucro Potencial:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object campocodigo: TEdit
+    Left = 77
+    Top = 8
+    Width = 121
+    Height = 23
+    TabOrder = 0
+  end
+  object CampoDescricao: TEdit
+    Left = 408
+    Top = 8
+    Width = 441
+    Height = 23
+    TabOrder = 1
+  end
+  object CampoUnidade: TEdit
+    Left = 86
+    Top = 80
+    Width = 121
+    Height = 23
+    TabOrder = 2
+  end
+  object CampoEstoque: TEdit
+    Left = 690
+    Top = 80
+    Width = 135
+    Height = 23
+    TabOrder = 3
+  end
+  object Campoprecocusto: TEdit
+    Left = 157
+    Top = 195
+    Width = 100
+    Height = 23
+    TabOrder = 4
+    Text = '0,00'
+    OnExit = CampoprecocustoExit
+  end
+  object ValueListEditor1: TValueListEditor
+    Left = 224
+    Top = 208
+    Width = 57
+    Height = 1
+    TabOrder = 5
+    ColWidths = (
+      150
+      -95)
+  end
+  object Campoprecovenda: TEdit
+    Left = 438
+    Top = 195
+    Width = 99
+    Height = 23
+    TabOrder = 6
+    Text = '0,00'
+    OnExit = CampoprecovendaExit
+  end
+  object Campolucro: TEdit
+    Left = 708
+    Top = 195
+    Width = 99
+    Height = 23
+    TabOrder = 7
+    Text = '0,00'
+    OnExit = CampolucroExit
+  end
+  object btSalvar: TButton
+    Left = 880
+    Top = 400
+    Width = 93
+    Height = 33
+    Caption = 'Salvar'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -20
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 8
+    OnClick = btSalvarClick
+  end
+end
